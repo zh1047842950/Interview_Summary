@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS进阶篇5---JS数组去重的n种方式</title>
+</head>
+<body>
+
+1、创建新数组，利用Array.indexOf属性，遍历原有数组的元素，判断该元素是否存在新数组中，不存在则将该元素放入新数组，返回新数组即可
+2、双层循环遍历数组的元素
+3、排序后遍历比较相邻的元素
+4、利用数组 filter 方法过滤，filter中将首次出现的位置与下标相等的元素返回
+    (item, index, array)=>array.indexOf(item) === index
+5、利用对象属性的唯一性,遍历数组，将数组元素作为对象的键，已存在的键
+6、利用 ES6 set 数据结构
+7、创建新数组，遍历原有数组的元素，判断元素的indexOf和lastIndexOf属性值，相等则将该元素放入新数组，返回新数组即可
+
+</body>
+</html>
