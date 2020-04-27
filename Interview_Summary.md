@@ -522,3 +522,25 @@ js对象的深拷贝及其的几种方法
             2、用obj.hasOwnProperty(key)来判断属性是否来自原型链上，因为for..in..也会遍历其原型链上的可枚举属性。
             3、上面的函数用到递归算法，在函数有名字，而且名字以后也不会变的情况下，这样定义没有问题。
                 但问题是这个函数的执行与函数名 factorial 紧紧耦合在了一起。为了消除这种紧密耦合的现象，需要使用 arguments.callee。
+
+5 个 JS 不良编码习惯
+    1.不要使用隐式类型转换
+        使你的代码在边缘情况下不太稳定
+            一个获取对象属性的函数。如果属性不存在，函数返回一个默认值
+             if (!object[propertyName]) {
+                return defaultValue;
+              }
+              属性存在的验证依赖于if（！object [propertyName]）{...}隐式转换的布尔值
+    2. 不要使用早期的JavaScript技巧
+        ES6 中可以使用 array.includes(item) 来代替 array.indexOf(item) !== -1
+    3. 不要污染函数作用域
+        变量尽量在使用到的作用域声明
+    4.尽量避免 undefined 和 null     
+        判断对象属性是否存在尽量用 propName in object
+        null是一个缺失对象的指示符。应该尽量避免从函数返回 null，特别是使用null作为参数调用函数。         
+
+URL和URI的区别
+    URI包括URL和URN两个类别，URL是URI的子集，所以URL一定是URI，而URI不一定是URL
+    URI = Universal Resource Identifier 统一资源标志符，用来标识抽象或物理资源的一个紧凑字符串。
+    URL = Universal Resource Locator 统一资源定位符，一种定位资源的主要访问机制的字符串，一个标准的URL必须包括：protocol、host、port、path、parameter、anchor。
+    URN = Universal Resource Name 统一资源名称，通过特定命名空间中的唯一名称或ID来标识资源。
