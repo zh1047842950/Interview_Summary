@@ -76,11 +76,11 @@ var aa = JSON.parse(JSON.stringify(a, stringifyRep), parseRep)
 表现：css
 行为：js（dom + es）
     WEB标准（结构、表现、行为分离）有哪些优点呢?
-易于维护：只需更改CSS文件，就可以改变整站的样式
-页面响应快：HTML文档体积变小，响应时间短
-可访问性：语义化的HTML（结构和表现相分离的HTML）编写的网页文件，更容易被屏幕阅读器识别
-设备兼容性：不同的样式表可以让网页在不同的设备上呈现不同的样式
-搜索引擎：语义化的HTML能更容易被搜索引擎解析，提升排名
+        易于维护：只需更改CSS文件，就可以改变整站的样式
+        页面响应快：HTML文档体积变小，响应时间短
+        可访问性：语义化的HTML（结构和表现相分离的HTML）编写的网页文件，更容易被屏幕阅读器识别
+        设备兼容性：不同的样式表可以让网页在不同的设备上呈现不同的样式
+        搜索引擎：语义化的HTML能更容易被搜索引擎解析，提升排名
 
 // Web 安全的理解
     前端：
@@ -544,3 +544,33 @@ URL和URI的区别
     URI = Universal Resource Identifier 统一资源标志符，用来标识抽象或物理资源的一个紧凑字符串。
     URL = Universal Resource Locator 统一资源定位符，一种定位资源的主要访问机制的字符串，一个标准的URL必须包括：protocol、host、port、path、parameter、anchor。
     URN = Universal Resource Name 统一资源名称，通过特定命名空间中的唯一名称或ID来标识资源。
+    
+React中Diff算法的策略及实现  // https://segmentfault.com/a/1190000016539430
+    React采用虚拟DOM技术实现对真实DOM的映射，即React Diff算法的差异查找实质是对两个JavaScript对象的差异查找
+        基于三个策略：
+            tree diff
+                Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。React 通过 updateDepth 对 Virtual DOM 树进行层级控制，
+                只会对同一个父节点下的所有子节点进行比较。当发现节点已经不存在，则该节点及其子节点会被完全删除掉，
+                不会用于进一步的比较。这样只需要对树进行一次遍历，便能完成整个 DOM 树的比较。
+                    对于树的每一层遍历，如果组件不存在则直接销毁
+            component diff        
+                拥有相同类的两个组件将会生成相似的树形结构，拥有不同类的两个组件将会生成不同的树形结
+                    如果是同一类型的组件，按照原策略继续比较 virtual DOM tree。
+                    如果不是，则将该组件判断为 dirty component，从而替换整个组件下的所有子节点。
+                    对于同一类型的组件，有可能其 Virtual DOM 没有任何变化，如果能够确切的知道这点那可以节省大量的 diff 运算时间，
+                    因此 React 允许用户通过 shouldComponentUpdate() 来判断该组件是否需要进行 diff。
+            element diff        
+                对于同一层级的一组子节点，它们可以通过唯一 id 进行区分。
+                    当节点处于同一层级时，React diff 提供了三种节点操作，分别为：INSERT_MARKUP（插入）、MOVE_EXISTING（移动）和 REMOVE_NODE（删除）。
+                    允许开发者对同一层级的同组子节点，添加唯一 key 进行区分，新老集合进行 diff 差异化对比，
+                    通过 key 发现新老集合中的节点都是相同的节点，因此无需进行节点删除和创建，只需要将老集合中节点的位置进行移动，更新为新集合中节点的位置，
+    基于中Diff的开发建议
+        基于tree diff：
+            开发组件时，注意保持DOM结构的稳定；即，尽可能少地动态操作DOM结构，尤其是移动操作。
+            当节点数过大或者页面更新次数过多时，页面卡顿的现象会比较明显。
+            这时可以通过 CSS 隐藏或显示节点，而不是真的移除或添加 DOM 节点。
+        基于component diff：
+            注意使用 shouldComponentUpdate() 来减少组件不必要的更新。
+            对于类似的结构应该尽量封装成组件，既减少代码量，又能减少component diff的性能消耗。
+        基于element diff：
+            对于列表结构，尽量减少类似将最后一个节点移动到列表首部的操作，当节点数量过大或更新操作过于频繁时，在一定程度上会影响 React 的渲染性能。        
