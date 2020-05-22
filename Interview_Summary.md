@@ -575,3 +575,68 @@ React中Diff算法的策略及实现  // https://segmentfault.com/a/119000001653
         基于element diff：
             对于列表结构，尽量减少类似将最后一个节点移动到列表首部的操作，当节点数量过大或更新操作过于频繁时，在一定程度上会影响 React 的渲染性能。        
 
+从ES6到ES10的新特性
+    ES6(ES2015)
+        Let 和 Const
+        类（Class）
+        箭头函数（Arrow function）
+        函数参数默认值（Function parameter defaults）
+        模板字符串（Template string）
+        解构赋值（Destructuring assignment）
+        模块化（Module）
+        扩展操作符（Spread operator）
+        对象属性简写（Object attribute shorthand）
+        Promise
+        for...of
+        Symbol
+        迭代器（Iterator）/ 生成器（Generator）
+        Set/WeakSet
+        Map/WeakMap
+        Proxy/Reflect
+        Regex对象的扩展
+        Math对象的扩展
+        Array对象的扩展
+            from、of、copyWithin、findIndex、find、fill
+            
+    ES7(ES2016)        
+        Array.prototype.includes()
+        幂运算符**
+        
+    ES8(ES2017)
+        async/await
+        Object.values()
+        Object.entries()
+        String.padStart()            
+        String.padEnd() 
+        ShareArrayBuffer（因安全问题，暂时在Chrome跟FireFox中被禁用）
+        Atomics对象
+        Object.getOwnPropertyDescriptors()
+        
+    ES9(ES2018)    
+        for await...of
+        正则表达式反向(lookbehind)断言
+        正则表达式 Unicode 转义
+        正则表达式 s/dotAll 模式
+        正则表达式命名捕获组
+        对象扩展操作符
+        Promise.prototype.finally()
+    
+    ES10(ES2019)
+        Array.prototype.flat() / flatMap()
+        String.prototype.trimStart() / trimLeft() / trimEnd() / trimRight()
+        Object.fromEntries()
+        Symbol.prototype.description
+        String.prototype.matchAll
+        Function.prototype.toString() 返回注释与空格
+        try-catch
+        globalThis
+
+    ES2020 新特性
+        Promise.allSettled
+        可选链（Optional chaining）
+        空值合并运算符（Nullish coalescing Operator）
+        dynamic-import
+        globalThis
+        BigInt
+
+
