@@ -10,12 +10,12 @@
 
 </body>
 <script lang="js">
-  1：jq使用，$.extend({},obj)
-  2:Object.assign({},obj)
-  3：clone(obj)
-  var clone = function (obj) { return JSON.parse(JSON.stringify(obj)); }
-  这种方法会忽略值为function以及undefied的字段，而且对date类型的支持也不太友好
-  4、封装最好的深拷贝的方法
+  // 1：jq使用，$.extend({},obj)
+  // 2:Object.assign({},obj)
+  // 3：clone(obj)
+  // var clone = function (obj) { return JSON.parse(JSON.stringify(obj)); }
+  // 这种方法会忽略值为function以及undefied的字段，而且对date类型的支持也不太友好
+  // 4、封装最好的深拷贝的方法
 
   var clone = function (obj) {
     if (obj === null) return null
@@ -30,9 +30,9 @@
     }
     return newObj
   }
-     1、用new obj.constructor ()构造函数新建一个空的对象，而不是使用{}或者[],这样可以保持原形链的继承；
-     2、用obj.hasOwnProperty(key)来判断属性是否来自原型链上，因为for..in..也会遍历其原型链上的可枚举属性。
-      3、上面的函数用到递归算法，在函数有名字，而且名字以后也不会变的情况下，这样定义没有问题。
-     但问题是这个函数的执行与函数名 factorial 紧紧耦合在了一起。为了消除这种紧密耦合的现象，需要使用 arguments.callee。
+     // 1、用new obj.constructor ()构造函数新建一个空的对象，而不是使用{}或者[],这样可以保持原形链的继承；
+     // 2、用obj.hasOwnProperty(key)来判断属性是否来自原型链上，因为for..in..也会遍历其原型链上的可枚举属性。
+     // 3、上面的函数用到递归算法，在函数有名字，而且名字以后也不会变的情况下，这样定义没有问题。
+     // 但问题是这个函数的执行与函数名 factorial 紧紧耦合在了一起。为了消除这种紧密耦合的现象，需要使用 arguments.callee。
 </script>
 </html>

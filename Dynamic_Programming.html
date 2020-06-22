@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+</body>
+<script>
+/*
+* https://mp.weixin.qq.com/s/akk1mXVq738DwffqK32W8w
+*
+* 在多张图片的情况下，我们可以有两种选择：
+
+    选择当前图片，那么假设当前要凑的总高度为 3，当前图片的高度为 2，剩余的高度就为 1，
+*       此时我们可以用剩余的高度去「上一个纵坐标」里寻找「只考虑前面几种图片」的情况下，高度为 1 时的最优解。
+*       并且记录 当前图片的高度 + 前几种图片凑剩余高度的最优解 为 max1。
+    不选择当前图片，那么就直接去「只考虑前面几种图片」的上一个纵坐标里，找到当前高度下的最优解即可，记为 max2。
+    比较 max1 和max2，找出更大的那个值，记录为当前状态下的最优解。
+*
+* */
+  // 应用动态规划和贪心算法高效实现瀑布流布局
+  // 尽可能选出图片中高度最接近图片总高度一半的元素
+  const sum = (arr = []) => arr.reduce((t, e) => t + e)
+  const dpHalf = (heights) => {
+    let mid = Math.round(sum(heights) / 2)
+    let dp = []
+
+    // 基础状态 只考虑第一个图片的情况
+    dp[0] = []
+    for (let cap = 0; cap <= mid; cap++) {
+      dp[0][cap] =
+        heights[0] > cap
+          ? {max: 0, indexes: []}
+          : {max: heights[0], indexes: [0]}
+    }
+
+    for (
+      let useHeightIndex = 1;
+      useHeightIndex < heights.length;
+      useHeightIndex++
+    ) {
+      if (!dp[useHeightIndex]) {
+        dp[useHeightIndex] = []
+      }
+      for (let cap = 0; cap <= mid; cap++) {
+        let usePrevHeightDp = dp[useHeightIndex - 1][cap] // 考虑上一坐标对应值时所求当前目标值的最优解
+        let usePrevHeightMax = usePrevHeightDp.max
+        let currentHeight = heights[useHeightIndex] //当前坐标对应值
+        // 这里有个小坑 剩余高度一定要转化为整数 否则去dp数组里取到的就是undefined了
+        let useThisHeightRestCap = Math.round(cap - currentHeight)  // 当前目标值与当前坐标对应值的差值
+        let useThisHeightPrevDp = dp[useHeightIndex - 1][useThisHeightRestCap] // 考虑上一坐标对应值时所求以上差值的最优解
+        let useThisHeightMax = useThisHeightPrevDp
+          ? currentHeight + useThisHeightPrevDp.max
+          : 0
+
+        // 是否把当前图片纳入选择 如果取当前的图片大于不取当前图片的高度
+        if (useThisHeightMax > usePrevHeightMax) {
+          dp[useHeightIndex][cap] = {
+            max: useThisHeightMax,
+            indexes: useThisHeightPrevDp.indexes.concat(useHeightIndex),
+          }
+        } else {
+          dp[useHeightIndex][cap] = {
+            max: usePrevHeightMax,
+            indexes: usePrevHeightDp.indexes,
+          }
+        }
+      }
+    }
+
+    return dp[heights.length - 1][mid]
+  }
+</script>
+
+</html>
