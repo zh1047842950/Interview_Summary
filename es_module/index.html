@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ES Module</title>
+
+</head>
+<body>
+    <h1>ES Module</h1>
+    <p id="text"></p>
+</body>
+<script type="module">
+  // index.js
+  import { name, github } from './data.js';
+
+  console.log(name(), github());
+
+  document.getElementById('text').innerHTML = `${name()} -- ${github()}`
+</script>
+</html>

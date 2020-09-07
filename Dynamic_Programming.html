@@ -9,23 +9,25 @@
 
 </body>
 <script>
-/*
-* https://mp.weixin.qq.com/s/akk1mXVq738DwffqK32W8w
-*
-* 在多张图片的情况下，我们可以有两种选择：
+  /*
+  * https://mp.weixin.qq.com/s/akk1mXVq738DwffqK32W8w
+  *
+  * 在多张图片的情况下，我们可以有两种选择：
 
-    选择当前图片，那么假设当前要凑的总高度为 3，当前图片的高度为 2，剩余的高度就为 1，
-*       此时我们可以用剩余的高度去「上一个纵坐标」里寻找「只考虑前面几种图片」的情况下，高度为 1 时的最优解。
-*       并且记录 当前图片的高度 + 前几种图片凑剩余高度的最优解 为 max1。
-    不选择当前图片，那么就直接去「只考虑前面几种图片」的上一个纵坐标里，找到当前高度下的最优解即可，记为 max2。
-    比较 max1 和max2，找出更大的那个值，记录为当前状态下的最优解。
-*
-* */
+      选择当前图片，那么假设当前要凑的总高度为 3，当前图片的高度为 2，剩余的高度就为 1，
+  *       此时我们可以用剩余的高度去「上一个纵坐标」里寻找「只考虑前面几种图片」的情况下，高度为 1 时的最优解。
+  *       并且记录 当前图片的高度 + 前几种图片凑剩余高度的最优解 为 max1。
+      不选择当前图片，那么就直接去「只考虑前面几种图片」的上一个纵坐标里，找到当前高度下的最优解即可，记为 max2。
+      比较 max1 和max2，找出更大的那个值，记录为当前状态下的最优解。
+  *
+  * */
   // 应用动态规划和贪心算法高效实现瀑布流布局
   // 尽可能选出图片中高度最接近图片总高度一半的元素
-  const sum = (arr = []) => arr.reduce((t, e) => t + e)
+  const sumFun = (arr = []) => arr.reduce((t, e) => t + e)
   const dpHalf = (heights) => {
-    let mid = Math.round(sum(heights) / 2)
+    const sum = sumFun(heights)
+    console.log(`sum ${sum}`)
+    let mid = Math.round(sum / 2)
     let dp = []
 
     // 基础状态 只考虑第一个图片的情况
@@ -70,9 +72,63 @@
         }
       }
     }
+    console.table(dp)
 
     return dp[heights.length - 1][mid]
   }
+
+  const arr = [7, 2, 8, 3, 5, 6, 4, 4, 2, 1, 9, 6, 3, 8, 5, 4, 2, 7]
+  dpHalf(arr)
+
+  // 分治算法javascript实现
+  //   举个简单的分治算法场景：求指定整型数组的最大值和最小值。
+  //
+  // 传统做法就是遍历一遍下来求出最大值和最小值，时间复杂度是O(n)。
+  //
+  // 下面说下用分治怎么实现。
+  //
+  // 1、为什么选择分治算法？
+  //
+  // 因为本题具有以下属性
+  //
+  // （1）、当该问题缩小到一定规模的时候，比如，该数组只有两个元素，这个时候，这个问题就很好解决。
+  //
+  //   （2）、该问题可以分解为若干规模较小的相同问题。
+  //
+  //   （3）、分解的问题的答案可以合并为该问题的解。
+  //
+  // 2、本题如何用分治算法实现？
+  //
+  // 直接上代码：
+
+  function divide_conquer (arr, from, to) {
+    if (to - from == 1) {
+      return {'max': Math.max(arr[from], arr[to]), 'min': Math.min(arr[from], arr[to])}
+    } else if (to - from == 0) {
+      return {'max': arr[from], 'min': arr[to]}
+    } else {
+      var middle = parseInt(from + (to - from) / 2)
+      var result1 = divide_conquer(arr, from, middle)
+      var result2 = divide_conquer(arr, middle + 1, to)
+      var result = {}
+      if (result1['max'] > result2['max']) {
+        result['max'] = result1['max']
+      } else {
+        result['max'] = result2['max']
+      }
+      if (result1['min'] > result2['min']) {
+        result['min'] = result2['min']
+      } else {
+        result['min'] = result1['min']
+      }
+      return result
+    }
+
+  }
+
+  var arr = [34, 5, 6, 7111, 7, 8, 889, 9]
+  console.log(divide_conquer(arr, 0, arr.length - 1))
+  // 核心思想是把数组分解到只有一个元素或者两个元素的时候，直接比大小返回，然后递归处理并返回结果。
 </script>
 
 </html>
