@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #btn{
+            width: 200px;
+            height: 100px;
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+         window.requestAnimationFrame()
+         告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。
+         该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行。 
+        -->
+    <div id="btn"></div>
+</body>
+<script>
+    const element = document.getElementById("btn");
+let start, previousTimeStamp;
+let done = false;
+
+function step(timestamp) {
+  if (start === undefined) {
+    start = timestamp;
+  }
+  const elapsed = timestamp - start;
+  console.log(timestamp,elapsed)
+
+  if (previousTimeStamp !== timestamp) {
+    // 这里使用 Math.min() 确保元素在恰好位于 200px 时停止运动
+    const count = Math.min(0.1 * elapsed, 200);
+    element.style.transform = `translateX(${count}px)`;
+    if (count === 200) done = true;
+  }
+
+  if (elapsed < 2000) {
+    // 2 秒之后停止动画
+    previousTimeStamp = timestamp;
+    if (!done) {
+      window.requestAnimationFrame(step);
+    }
+  }
+}
+
+window.requestAnimationFrame(step);
+
+</script>
+</html>

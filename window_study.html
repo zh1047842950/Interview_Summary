@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    window.addEventListener(
+      "rejectionhandled",
+      (event) => {
+        console.log(
+          "Promise rejected => rejectionhandled; reason: " + event.reason
+        );
+      }
+    );
+    window.addEventListener(
+      "unhandledrejection",
+      (event) => {
+        console.log(
+          "Promise rejected => unhandledrejection; reason: " + event.reason
+        );
+      }
+    );
+    function foo() {
+      new Promise((resolve, reject) => {
+        const num = Math.random() * 10;
+        if (num > 5) {
+          resolve({
+            ccRes: true,
+            num,
+          });
+        } else {
+          reject({
+            ccRes: false,
+            num,
+          });
+        }
+      }).then(
+        (res) => {
+          console.log("then.resolve", res);
+        },
+        (err) => {
+          console.log("then.reject", err);
+        }
+      );
+    }
+  </script>
+</html>
